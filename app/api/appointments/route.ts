@@ -29,6 +29,17 @@ export async function POST(request: Request) {
     if (doctorError) throw doctorError;
     if (!doctor) return NextResponse.json({ error: "The clinic schedule is not configured yet. Please contact the clinic." }, { status: 503 });
 
+    const localDate = new Date(startsAt.getTime() + 5 * 60 * 60 * 1000);
+    const weekday = localDate.getUTCDay();
+    const startTime = localDate.toISOString().slice(11, 19);
+    const endTime = new Date(localDate.getTime() + doctor.slot_minutes * 60_000).toISOString().slice(11, 19);
+    const { data: schedule, error: scheduleError } = await supabase
+      .from("doctor_availability").select("id").eq("doctor_id", doctor.id)
+      .eq("weekday", weekday).eq("active", true).lte("start_time", startTime)
+      .gte("end_time", endTime).limit(1).maybeSingle();
+    if (scheduleError) throw scheduleError;
+    if (!schedule) return NextResponse.json({ error: "The selected time is outside the clinic's configured hours. Please choose another time." }, { status: 400 });
+
     const endsAt = new Date(startsAt.getTime() + doctor.slot_minutes * 60_000);
     const { data, error } = await supabase.from("appointments").insert({
       patient_name: name,
