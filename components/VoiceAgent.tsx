@@ -1,7 +1,7 @@
 "use client";
 
 import Script from "next/script";
-import { createElement, useEffect, useState } from "react";
+import { createElement, useState } from "react";
 
 export default function VoiceAgent() {
   // Public agents can use their Agent ID in the browser. Never read an API key here.
@@ -10,27 +10,26 @@ export default function VoiceAgent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    if (publicAgentId) return;
-
-    let cancelled = false;
+  async function connectPrivateAgent() {
     setLoading(true);
-    fetch("/api/elevenlabs/signed-url", { cache: "no-store" })
-      .then(async (response) => {
-        const data = await response.json().catch(() => ({}));
-        if (!response.ok) throw new Error(data.error || "Voice agent is not configured yet.");
-        if (!data.signed_url) throw new Error("ElevenLabs did not return a signed URL.");
-        if (!cancelled) setSignedUrl(data.signed_url);
-      })
-      .catch((err: unknown) => {
-        if (!cancelled) setError(err instanceof Error ? err.message : "Could not connect the voice agent.");
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
+    setError("");
+    try {
+      const response = await fetch("/api/elevenlabs/signed-url", {
+        method: "GET",
+        cache: "no-store"
       });
-
-    return () => { cancelled = true; };
-  }, [publicAgentId]);
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || "Voice agent is not configured yet.");
+      if (typeof data.signed_url !== "string" || !data.signed_url) {
+        throw new Error("ElevenLabs did not return a signed URL.");
+      }
+      setSignedUrl(data.signed_url);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Could not connect the voice agent.");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const agentReady = Boolean(publicAgentId || signedUrl);
 
@@ -44,10 +43,18 @@ export default function VoiceAgent() {
             publicAgentId ? { "agent-id": publicAgentId } : { "signed-url": signedUrl }
           )
         : <div className="rounded-xl border border-dashed border-white/15 p-5">
-            <p className="font-semibold">{loading ? "Connecting voice agent…" : "Voice agent not connected"}</p>
+            <p className="font-semibold">Voice agent not connected</p>
             <p className="mt-2 text-sm leading-6 text-slate-400">
-              {error || "Set NEXT_PUBLIC_ELEVENLABS_AGENT_ID for a public agent, or set ELEVENLABS_AGENT_ID and ELEVENLABS_API_KEY as server-side Vercel environment variables for a private agent."}
+              {error || (publicAgentId
+                ? "The voice widget is loading."
+                : "Configure a public Agent ID, or set ELEVENLABS_AGENT_ID and ELEVENLABS_API_KEY as server-side Vercel environment variables for a private agent.")}
             </p>
+            {!publicAgentId && <button
+              type="button"
+              onClick={connectPrivateAgent}
+              disabled={loading}
+              className="mt-4 rounded-lg bg-indigo-400 px-4 py-2 text-sm font-semibold text-slate-950 disabled:opacity-60"
+            >{loading ? "Connecting…" : "Connect voice agent"}</button>}
           </div>}
     </div>
   );
