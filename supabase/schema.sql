@@ -118,6 +118,6 @@ with new_doctor as (
   returning id
 )
 insert into public.doctor_availability (doctor_id, weekday, start_time, end_time, active)
-select id, weekday, '09:00', '17:00', true
+select new_doctor.id, weekdays.weekday, '09:00', '17:00', true
 from new_doctor
-cross join generate_series(1, 6) as weekday;
+cross join generate_series(1, 6) as weekdays(weekday);
