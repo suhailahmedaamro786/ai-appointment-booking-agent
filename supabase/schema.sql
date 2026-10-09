@@ -104,3 +104,20 @@ alter table public.admin_users enable row level security;
 -- No public policies are intentionally created. Supabase service-role calls
 -- from trusted server code bypass RLS; admin APIs must verify the signed-in user
 -- against admin_users before returning or modifying patient records.
+
+
+-- Starter clinic profile and schedule. Update the clinic name and hours for your real clinic.
+insert into public.clinic_settings (clinic_name, timezone)
+select 'SkinCare Clinic', 'Asia/Karachi'
+where not exists (select 1 from public.clinic_settings);
+
+with new_doctor as (
+  insert into public.doctors (full_name, specialty, active, slot_minutes)
+  select 'Clinic Practitioner', 'Skin Care Consultation', true, 30
+  where not exists (select 1 from public.doctors)
+  returning id
+)
+insert into public.doctor_availability (doctor_id, weekday, start_time, end_time, active)
+select id, weekday, '09:00', '17:00', true
+from new_doctor
+cross join generate_series(1, 6) as weekday;
