@@ -1,26 +1,82 @@
+import Image from "next/image";
 import VoiceAgent from "@/components/VoiceAgent";
 
 const features = [
-  ["01", "Natural voice conversations", "Explore how conversational AI can guide appointment requests."],
-  ["02", "Appointment workflow", "Walk through fictional availability and slot selection."],
-  ["03", "Vercel-ready foundation", "A Next.js app with an API health endpoint."]
+  { number: "01", title: "Natural conversations", description: "A voice-first interface designed to make appointment requests feel simple and human." },
+  { number: "02", title: "Smarter scheduling", description: "A clear foundation for checking availability, collecting details, and confirming requests." },
+  { number: "03", title: "Business-ready design", description: "A modern, responsive experience built by SK DEV TEAM for service businesses." },
 ];
-const slots = ["Monday · 10:00 AM", "Tuesday · 2:00 PM", "Wednesday · 4:00 PM"];
+const steps = [
+  { number: "01", title: "Talk naturally", detail: "The visitor speaks with the AI receptionist." },
+  { number: "02", title: "Understand the request", detail: "The assistant gathers the requested service and preferred time." },
+  { number: "03", title: "Check availability", detail: "A connected scheduling service will validate open slots." },
+  { number: "04", title: "Confirm securely", detail: "A production backend will save and confirm the booking." },
+];
 
 export default function Home() {
-  return <main className="min-h-screen overflow-hidden">
-    <header className="shell flex h-[78px] items-center justify-between border-b border-white/10">
-      <a href="#" className="flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl border border-indigo-300/25 bg-indigo-400/10 font-black text-indigo-200">SK</span><span><b className="block text-sm">SK DEV TEAM</b><small className="block text-[10px] tracking-widest text-slate-500">AI SYSTEMS LAB</small></span></a>
-      <nav className="hidden gap-6 text-xs text-slate-400 sm:flex"><a href="#features">Capabilities</a><a href="#demo">Live demo</a><a href="#architecture">Architecture</a></nav>
-      <a className="btn" href="#demo">Try the demo ↗</a>
-    </header>
-    <section className="shell grid items-center gap-12 py-20 md:grid-cols-2 md:py-28">
-      <div><p className="label text-emerald-300">● Voice automation · Practice project</p><h1 className="mt-7 text-5xl font-semibold leading-tight tracking-tight sm:text-6xl md:text-7xl">A smarter way to <span className="gradient">book the next</span> appointment.</h1><p className="mt-6 max-w-xl text-base leading-7 text-slate-400">Meet an AI receptionist built to explore natural voice conversations, appointment workflows, and business automation.</p><div className="mt-8 flex flex-wrap gap-3"><a className="btn" href="#demo">Explore voice demo →</a><a className="ghost" href="#architecture">How it works</a></div><p className="mt-8 text-xs text-slate-500">Demo environment · Next.js + Vercel · ElevenLabs-ready</p></div>
-      <div className="glass rounded-[26px] p-6"><div className="flex items-center justify-between border-b border-white/10 pb-5"><div><p className="text-sm font-semibold">Receptionist console</p><p className="mt-1 text-xs text-slate-500">Practice environment / 001</p></div><span className="rounded-full border border-emerald-300/20 px-3 py-1.5 text-[10px] text-emerald-300">DEMO MODE</span></div><div className="py-8 text-center"><div className="mx-auto grid h-28 w-28 place-items-center rounded-full border border-indigo-300/20 bg-indigo-400/10 text-4xl text-indigo-200">✳</div><p className="mt-5 font-semibold">Your AI receptionist</p><p className="mt-2 text-xs text-slate-500">Ready to demonstrate a conversation</p></div><div className="rounded-xl border border-white/10 bg-white/[.03] p-4"><p className="text-[10px] text-indigo-300">AI RECEPTIONIST</p><p className="mt-2 text-sm leading-6 text-slate-300">Hello! Would you like to practice booking an appointment?</p></div><div className="ml-7 mt-3 rounded-xl border border-indigo-300/15 bg-indigo-400/[.08] p-4"><p className="text-[10px] text-slate-500">EXAMPLE CALLER</p><p className="mt-2 text-sm text-slate-300">I would like to see available times.</p></div></div>
-    </section>
-    <section id="features" className="shell border-t border-white/10 py-16"><p className="label">Built for real-world workflows</p><h2 className="mt-3 text-3xl font-semibold">Small demo. <span className="text-slate-500">Serious foundation.</span></h2><div className="mt-8 grid gap-4 md:grid-cols-3">{features.map(([n,t,d])=><article className="card" key={n}><p className="text-xs text-indigo-300">{n}</p><h3 className="mt-5 font-semibold">{t}</h3><p className="mt-3 text-sm leading-6 text-slate-400">{d}</p></article>)}</div></section>
-    <section id="demo" className="shell grid gap-8 border-t border-white/10 py-16 md:grid-cols-2"><div><p className="label">Interactive sandbox</p><h2 className="mt-3 text-3xl font-semibold">Meet the receptionist.</h2><p className="mt-4 text-sm leading-7 text-slate-400">Configure an ElevenLabs agent to enable voice interaction.</p><div className="mt-6 rounded-xl border border-amber-300/20 bg-amber-200/[.04] p-4"><b className="text-sm text-amber-200">Practice only</b><p className="mt-2 text-xs leading-5 text-slate-400">No real appointments are created or stored. Do not enter private medical or payment information.</p></div><p className="label mt-7">Sample availability</p><div className="mt-3 space-y-2">{slots.map(s=><div className="flex items-center gap-3 rounded-xl border border-white/10 p-3" key={s}><span className="h-2 w-2 rounded-sm bg-indigo-400"/><span className="text-sm text-slate-300">{s}</span><span className="ml-auto text-[10px] text-slate-600">SAMPLE</span></div>)}</div></div><div className="glass h-fit rounded-2xl p-6"><p className="font-semibold">Voice agent</p><p className="mb-5 mt-1 text-xs text-slate-500">ElevenLabs integration</p><VoiceAgent/></div></section>
-    <section id="architecture" className="shell border-t border-white/10 py-16"><p className="label">Architecture preview</p><h2 className="mt-3 text-3xl font-semibold">From voice to workflow.</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-slate-400">Planned flow: voice conversation → validated server-side tool → availability check → database. The backend and database are not yet connected in this demo.</p><div className="mt-7 grid gap-3 sm:grid-cols-4">{[["01","Caller","Speaks naturally"],["02","ElevenLabs","Handles conversation"],["03","Secure API","Validates action"],["04","Database","Stores confirmed data"]].map(([n,t,d])=><article className="card" key={n}><p className="text-xs text-indigo-300">{n}</p><h3 className="mt-4 font-semibold">{t}</h3><p className="mt-2 text-xs text-slate-500">{d}</p></article>)}</div></section>
-    <footer className="border-t border-white/10"><div className="shell flex flex-col gap-3 py-7 text-xs text-slate-500 sm:flex-row sm:justify-between"><p>© 2026 SK DEV TEAM · Learning demo</p><div className="flex gap-5"><a href="https://github.com/suhailahmedaamro786/ai-appointment-booking-agent">GitHub ↗</a><a href="/api/health">API health ↗</a></div></div></footer>
-  </main>;
+  return (
+    <main className="min-h-screen overflow-hidden">
+      <header className="shell flex h-[86px] items-center justify-between border-b border-white/10">
+        <a href="#" aria-label="SK DEV TEAM home" className="flex items-center">
+          <Image src="/sk-dev-team-logo.svg" alt="SK DEV TEAM — AI Automation" width={240} height={63} priority className="h-auto w-[190px] sm:w-[220px]" />
+        </a>
+        <nav className="hidden items-center gap-7 text-sm text-slate-400 md:flex">
+          <a className="transition hover:text-white" href="#capabilities">Capabilities</a>
+          <a className="transition hover:text-white" href="#assistant">AI assistant</a>
+          <a className="transition hover:text-white" href="#workflow">How it works</a>
+        </nav>
+        <a className="btn" href="#assistant">Try voice assistant <span aria-hidden="true">↗</span></a>
+      </header>
+
+      <section className="shell grid items-center gap-12 py-16 sm:py-20 lg:grid-cols-[1.08fr_.92fr] lg:gap-16 lg:py-28">
+        <div>
+          <p className="label flex items-center gap-2"><span className="inline-block h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_14px_#34d399]" /> AI-powered appointment experience</p>
+          <h1 className="mt-7 max-w-3xl text-5xl font-semibold leading-[1.08] tracking-[-.045em] sm:text-6xl lg:text-[68px]">Appointments made <span className="gradient">effortless.</span></h1>
+          <p className="mt-6 max-w-xl text-base leading-8 text-slate-400 sm:text-lg">Meet your always-ready AI receptionist. Let visitors explore a natural voice experience built for modern appointment-based businesses.</p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a className="btn" href="#assistant">Talk to the AI <span aria-hidden="true">→</span></a>
+            <a className="ghost" href="#workflow">Explore the workflow</a>
+          </div>
+          <div className="mt-10 flex flex-wrap gap-x-6 gap-y-3 border-t border-white/10 pt-6 text-xs text-slate-400">
+            <span className="flex items-center gap-2"><span className="text-emerald-300">✓</span> Voice-first experience</span>
+            <span className="flex items-center gap-2"><span className="text-emerald-300">✓</span> Responsive design</span>
+            <span className="flex items-center gap-2"><span className="text-emerald-300">✓</span> Built by SK DEV TEAM</span>
+          </div>
+        </div>
+
+        <div className="relative mx-auto w-full max-w-[490px]">
+          <div className="pointer-events-none absolute -inset-8 rounded-full bg-indigo-500/10 blur-3xl" />
+          <div className="glass relative rounded-[28px] p-5 shadow-2xl shadow-black/30 sm:p-7">
+            <div className="flex items-center justify-between border-b border-white/10 pb-5">
+              <div className="flex items-center gap-3"><div className="grid h-11 w-11 place-items-center rounded-2xl bg-indigo-400/10 text-xl text-indigo-200">✳</div><div><p className="font-semibold">AI Receptionist</p><p className="mt-1 text-xs text-slate-500">SK DEV TEAM assistant</p></div></div>
+              <span className="rounded-full border border-amber-300/20 bg-amber-300/[.06] px-3 py-1.5 text-[10px] font-semibold tracking-wide text-amber-200">PREVIEW</span>
+            </div>
+            <div className="py-8 text-center">
+              <div className="voice-orb mx-auto grid h-36 w-36 place-items-center rounded-full border border-indigo-200/20 bg-indigo-400/[.07]"><div className="grid h-24 w-24 place-items-center rounded-full border border-indigo-200/20 bg-gradient-to-br from-indigo-400/20 to-emerald-300/10 text-4xl text-indigo-100">✳</div></div>
+              <p className="mt-6 text-lg font-semibold">How can I help you today?</p>
+              <p className="mx-auto mt-2 max-w-xs text-sm leading-6 text-slate-400">Start a conversation to explore the voice assistant experience.</p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/[.035] p-4"><p className="text-[10px] font-bold tracking-[.18em] text-indigo-200">EXAMPLE CONVERSATION</p><p className="mt-3 text-sm leading-6 text-slate-300">“Hi, I’d like to find a suitable time for an appointment.”</p><div className="mt-3 flex items-center gap-2 text-xs text-slate-500"><span className="h-1.5 w-1.5 rounded-full bg-emerald-300" /> Natural language · Simple experience</div></div>
+            <p className="mt-4 text-center text-[11px] leading-5 text-slate-500">Preview experience. Real bookings are not enabled yet.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="capabilities" className="shell border-t border-white/10 py-16 sm:py-20">
+        <div className="max-w-2xl"><p className="label">Designed around your customers</p><h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">A better first step to every booking.</h2><p className="mt-4 text-sm leading-7 text-slate-400">A polished voice assistant experience with a clear path toward connected scheduling and business workflows.</p></div>
+        <div className="mt-9 grid gap-4 md:grid-cols-3">{features.map((feature) => <article className="card transition duration-200 hover:-translate-y-1 hover:border-indigo-300/25" key={feature.number}><p className="text-xs font-bold tracking-widest text-emerald-300">{feature.number}</p><h3 className="mt-5 text-lg font-semibold">{feature.title}</h3><p className="mt-3 text-sm leading-7 text-slate-400">{feature.description}</p></article>)}</div>
+      </section>
+
+      <section id="assistant" className="border-y border-white/10 bg-white/[.018] py-16 sm:py-20">
+        <div className="shell grid items-start gap-9 lg:grid-cols-[.8fr_1.2fr] lg:gap-16">
+          <div><p className="label">Interactive experience</p><h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Meet your AI receptionist.</h2><p className="mt-4 text-sm leading-7 text-slate-400">Use the voice widget to test a conversation. Allow microphone access when your browser asks.</p><div className="mt-6 rounded-2xl border border-amber-300/20 bg-amber-200/[.035] p-4"><p className="flex items-center gap-2 text-sm font-semibold text-amber-100"><span aria-hidden="true">ⓘ</span> Preview mode</p><p className="mt-2 text-xs leading-6 text-slate-400">Appointment availability and booking storage are not connected yet. Please do not enter sensitive personal, medical, or payment details.</p></div></div>
+          <div className="glass rounded-3xl p-5 sm:p-7"><div className="mb-6 flex items-center justify-between"><div><h3 className="font-semibold">Voice assistant</h3><p className="mt-1 text-xs text-slate-500">Powered by ElevenLabs</p></div><span className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] text-slate-400">VOICE DEMO</span></div><VoiceAgent /></div>
+        </div>
+      </section>
+
+      <section id="workflow" className="shell py-16 sm:py-20"><p className="label">Built for the next step</p><h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">From conversation to confirmation.</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-slate-400">The interface is ready to evolve. Calendar availability, secure booking APIs, and persistent storage still need to be integrated before this can accept real appointments.</p><div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{steps.map((step) => <article className="card" key={step.number}><p className="text-xs font-bold tracking-widest text-indigo-200">{step.number}</p><h3 className="mt-5 font-semibold">{step.title}</h3><p className="mt-3 text-sm leading-6 text-slate-400">{step.detail}</p></article>)}</div></section>
+
+      <footer className="border-t border-white/10"><div className="shell flex flex-col gap-4 py-7 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between"><p>© 2026 SK DEV TEAM. Built for smarter business workflows.</p><div className="flex gap-5"><a className="transition hover:text-white" href="https://github.com/suhailahmedaamro786/ai-appointment-booking-agent">GitHub ↗</a><a className="transition hover:text-white" href="/api/health">System status ↗</a></div></div></footer>
+    </main>
+  );
 }
