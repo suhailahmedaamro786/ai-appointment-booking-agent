@@ -1,26 +1,39 @@
 # AI Appointment Booking Agent
 
-A professional, Vercel-ready AI receptionist demo by **SK DEV TEAM**, built with Next.js, TypeScript, Tailwind CSS, and ElevenLabs Conversational AI.
+A skincare clinic website and appointment-request system by **SK DEV TEAM**, built with Next.js, TypeScript, Tailwind CSS, Supabase, and ElevenLabs Conversational AI.
 
-## Features
-- Responsive dark landing page
+## Current features
+- Responsive skincare clinic landing page and service cards
+- Appointment request form with server-side validation
+- Supabase-backed pending appointment records and schedule checks
+- Database exclusion constraint to prevent overlapping active appointments for the same practitioner
 - Optional ElevenLabs voice widget
-- Fictional sample appointment slots with clear DEMO MODE messaging
 - Health endpoint at `/api/health`
-- Next.js App Router and Vercel deployment configuration
+
+## Required environment variables
+- `SUPABASE_URL` — Supabase project URL
+- `SUPABASE_SECRET_KEY` — server-only Supabase secret key; never use a `NEXT_PUBLIC_` prefix
+- `NEXT_PUBLIC_ELEVENLABS_AGENT_ID` — public ElevenLabs Agent ID for the embedded widget
+
+Optional private-agent fallback:
+- `ELEVENLABS_AGENT_ID`
+- `ELEVENLABS_API_KEY` — server-side only
 
 ## Local development
 1. Install Node.js 20 or later.
 2. Run `npm install`.
-3. Copy `.env.example` to `.env.local`.
-4. Optionally set `NEXT_PUBLIC_ELEVENLABS_AGENT_ID` to your public ElevenLabs agent ID.
-5. Run `npm run dev` and open http://localhost:3000.
+3. Copy `.env.example` to `.env.local` and set the required variables.
+4. Run `npm run dev` and open http://localhost:3000.
 
-## Deploy on Vercel
-Import this repository into Vercel and select the Next.js framework. If your ElevenLabs agent is configured, add `NEXT_PUBLIC_ELEVENLABS_AGENT_ID` under Project Settings → Environment Variables, then deploy.
+## Important production setup
+- Update the placeholder clinic name, practitioner details, and opening hours before public launch.
+- The form creates **pending requests**, not confirmed appointments. Staff must confirm them in the separate Clinic-Admin dashboard.
+- The ElevenLabs agent currently provides conversational assistance only. It is **not connected to the booking database** until a secure tool/webhook integration is implemented and tested.
+- Create a Supabase Auth user for the administrator and add that user's UUID to `public.admin_users`.
+- Never commit `.env.local`, expose secret keys in `NEXT_PUBLIC_*`, or use real patient information for tests.
 
-## Demo safety
-The sample slots (Monday 10 AM, Tuesday 2 PM, Wednesday 4 PM) are fictional. This version does not save or create real appointments. Never place private API keys in `NEXT_PUBLIC_*` variables or commit `.env.local`. Real bookings require a verified backend, database, availability checks, and server-side validation.
+## Checks
+The GitHub Actions workflow runs TypeScript checks and a production build on pushes and pull requests to `main`.
 
 ## Maintainer
 **SK DEV TEAM** · AI Agents · Web Development · Business Automation
